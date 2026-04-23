@@ -396,7 +396,10 @@ function saveApiKey(){
   const v = document.getElementById('api-key-input').value.trim();
   if(!v.startsWith('sk-')) return alert('올바른 API 키를 입력해주세요 (sk- 로 시작)');
   apiKey = v;
-  localStorage.setItem('anthropic_key', v);
+  try{
+    localStorage.setItem('anthropic_key', v);
+    sessionStorage.setItem('anthropic_key', v);
+  }catch(e){}
   document.getElementById('key-modal').classList.remove('show');
 }
 window.saveApiKey = saveApiKey;
@@ -653,6 +656,9 @@ window.sendMsg = async ()=>{
 
 window.askAI = async ()=>{
   if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
+  if(!apiKey){
+    apiKey = localStorage.getItem('anthropic_key')||'';
+  }
   if(!apiKey) return window.showKeyModal();
   const inp = document.getElementById('ai-input');
   const q = inp.value.trim();
