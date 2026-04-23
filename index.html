@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팀 에이전트 — 무역 부품 개발</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f1117;--bg2:#181b24;--bg3:#1e2130;
+  --border:#2e3249;--border2:#3d4266;
+  --text:#e8eaf6;--text2:#9196b8;--text3:#5c6088;
+  --blue:#4f7cff;--blue2:#1a3a8f;--blue3:#0d1f52;
+  --teal:#2dd4a0;--teal2:#0d6b50;--teal3:#073d2e;
+  --amber:#f5a623;--amber2:#7a4f00;--amber3:#3d2700;
+  --coral:#ff6b6b;--coral2:#7a1f1f;--coral3:#3d0f0f;
+  --purple:#a78bfa;--purple2:#4c3080;--purple3:#271a42;
+  --r:10px;--rl:14px;
+}
+html,body{height:100%;font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--text);}
+body{display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── HEADER ── */
+#header{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;gap:10px;}
+.logo{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+#app-name{font-size:14px;font-weight:600;}
+.sync-pill{display:flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--teal2);background:var(--teal3);color:var(--teal);white-space:nowrap;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+.live-dot.off{background:var(--border2);}
+.live-dot.pulse{animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ── LAYOUT ── */
+#body{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+#sidebar{width:210px;border-right:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.sb-label{padding:12px 13px 5px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
+.member{display:flex;align-items:center;gap:8px;padding:6px 13px;font-size:12px;color:var(--text2);}
+.av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.av-0{background:var(--blue2);color:var(--blue);}
+.av-1{background:var(--teal3);color:var(--teal);}
+.av-2{background:var(--coral3);color:var(--coral);}
+.av-3{background:var(--purple3);color:var(--purple);}
+.av-4{background:var(--amber3);color:var(--amber);}
+.online{width:6px;height:6px;border-radius:50%;background:var(--teal);margin-left:auto;flex-shrink:0;}
+.divider{height:1px;background:var(--border);margin:7px 0;}
+.ch-top{display:flex;align-items:center;justify-content:space-between;padding:10px 13px 4px;}
+.add-btn{width:20px;height:20px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.add-btn:hover{color:var(--blue);border-color:var(--blue);}
+.channel{display:flex;align-items:center;gap:7px;padding:7px 13px;cursor:pointer;border-left:2px solid transparent;transition:.15s;position:relative;}
+.channel:hover{background:var(--bg3);}
+.channel.active{background:var(--bg3);border-left-color:var(--blue);}
+.ch-name{font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.channel.active .ch-name{color:var(--text);font-weight:500;}
+.ch-badge{font-size:10px;background:var(--blue2);color:var(--blue);border-radius:20px;padding:1px 6px;flex-shrink:0;}
+.ch-del{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 5px;border-radius:4px;display:none;}
+.channel:hover .ch-del{display:block;}
+.ch-del:hover{color:var(--coral);}
+#new-ch-box{display:none;padding:8px 13px;border-top:1px solid var(--border);}
+#new-ch-box input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:6px 10px;font-size:12px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:6px;}
+#new-ch-box input:focus{outline:none;border-color:var(--blue);}
+.mini-btns{display:flex;gap:5px;}
+.mini-btns button{flex:1;padding:5px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;}
+.mini-btns .ok{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;min-width:0;}
+#ch-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+#ch-bar-title{font-size:14px;font-weight:600;}
+#ch-bar-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+#ch-bar-count{font-size:11px;color:var(--text3);}
+
+#feed{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+#feed::-webkit-scrollbar{width:4px;}
+#feed::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+.msg{display:flex;gap:9px;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.msg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.msg-r{flex:1;min-width:0;}
+.msg-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+.msg-name{font-size:12px;font-weight:600;}
+.tag{font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;}
+.t-visit{background:var(--teal3);color:var(--teal);border:1px solid var(--teal2);}
+.t-idea{background:var(--purple3);color:var(--purple);border:1px solid var(--purple2);}
+.t-update{background:var(--amber3);color:var(--amber);border:1px solid var(--amber2);}
+.t-ai{background:var(--blue3);color:var(--blue);border:1px solid var(--blue2);}
+.msg-time{font-size:10px;color:var(--text3);margin-left:auto;}
+.msg-body{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.ai-body{background:var(--bg3);border:1px solid var(--blue2);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.dots{display:flex;gap:4px;padding:2px 0;}
+.dots span{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:db 1.2s infinite;}
+.dots span:nth-child(2){animation-delay:.2s;}
+.dots span:nth-child(3){animation-delay:.4s;}
+@keyframes db{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.empty{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px;line-height:2;}
+
+/* ── INPUT ── */
+#input-area{border-top:1px solid var(--border);background:var(--bg2);padding:11px 14px;flex-shrink:0;}
+.row1{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+#who{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:4px 9px;font-size:12px;color:var(--text);font-family:'Pretendard',sans-serif;cursor:pointer;}
+#who option{background:var(--bg3);}
+.tag-row{display:flex;gap:5px;flex:1;}
+.tbtn{padding:3px 10px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;transition:.15s;}
+.tbtn.sv{background:var(--teal3);color:var(--teal);border-color:var(--teal2);}
+.tbtn.si{background:var(--purple3);color:var(--purple);border-color:var(--purple2);}
+.tbtn.su{background:var(--amber3);color:var(--amber);border-color:var(--amber2);}
+.row2{display:flex;gap:7px;margin-bottom:8px;}
+#msg-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;resize:none;line-height:1.5;}
+#msg-input:focus{outline:none;border-color:var(--blue);}
+#msg-input::placeholder{color:var(--text3);}
+#send-btn{padding:9px 16px;background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;}
+#send-btn:hover{opacity:.85;}
+.row3{display:flex;gap:7px;}
+#ai-input{flex:1;background:var(--blue3);border:1px solid var(--blue2);border-radius:var(--r);padding:8px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;}
+#ai-input:focus{outline:none;border-color:var(--blue);}
+#ai-input::placeholder{color:var(--blue);opacity:.5;}
+#ai-btn{padding:8px 14px;background:var(--blue3);border:1px solid var(--blue2);border-radius:var(--r);color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;white-space:nowrap;}
+#ai-btn:hover{background:var(--blue2);}
+#ai-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── API KEY MODAL ── */
+#key-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;}
+#key-modal.show{display:flex;}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:28px;width:380px;max-width:90vw;}
+.modal-box h2{font-size:16px;font-weight:600;margin-bottom:8px;}
+.modal-box p{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:16px;}
+.modal-box input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:12px;}
+.modal-box input:focus{outline:none;border-color:var(--blue);}
+.modal-box button{width:100%;padding:10px;background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;}
+.modal-note{font-size:11px;color:var(--text3);margin-top:10px;text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- API Key Modal -->
+<div id="key-modal">
+  <div class="modal-box">
+    <h2>🔑 Anthropic API 키 설정</h2>
+    <p>AI 답변 기능을 사용하려면 Anthropic API 키가 필요해요.<br>키는 이 브라우저에만 저장되며 외부로 전송되지 않아요.<br><a href="https://console.anthropic.com" target="_blank" style="color:var(--blue);">console.anthropic.com</a>에서 발급받을 수 있어요.</p>
+    <input type="password" id="api-key-input" placeholder="sk-ant-..." />
+    <button onclick="saveApiKey()">저장하고 시작하기</button>
+    <p class="modal-note">나중에 우측 상단에서 변경 가능해요</p>
+  </div>
+</div>
+
+<div id="header">
+  <div style="display:flex;align-items:center;gap:9px;">
+    <div class="logo">T</div>
+    <span id="app-name">팀 에이전트</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="sync-pill"><div class="live-dot" id="live-dot"></div><span id="sync-txt">연결 중...</span></div>
+    <button onclick="showKeyModal()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:4px 10px;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;">API 키</button>
+  </div>
+</div>
+
+<div id="body">
+  <div id="sidebar">
+    <div class="sb-label">팀 멤버</div>
+    <div class="member"><div class="av av-0">나</div>김팀장<div class="online"></div></div>
+    <div class="member"><div class="av av-1">이</div>이대리<div class="online"></div></div>
+    <div class="member"><div class="av av-2">박</div>박과장</div>
+    <div class="member"><div class="av av-3">최</div>최주임<div class="online"></div></div>
+    <div class="member"><div class="av av-4">정</div>정사원</div>
+    <div class="divider"></div>
+    <div class="ch-top">
+      <span class="sb-label" style="padding:0;">프로젝트</span>
+      <button class="add-btn" onclick="toggleNewCh()" title="새 프로젝트">+</button>
+    </div>
+    <div id="ch-list"></div>
+    <div id="new-ch-box">
+      <input id="new-ch-input" placeholder="프로젝트명 입력..." maxlength="24" />
+      <div class="mini-btns">
+        <button onclick="toggleNewCh()">취소</button>
+        <button class="ok" onclick="addCh()">추가</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div id="ch-bar">
+      <div><div id="ch-bar-title">채널을 선택하세요</div><div id="ch-bar-sub">프로젝트별로 기록이 분리됩니다</div></div>
+      <span id="ch-bar-count"></span>
+    </div>
+    <div id="feed"><div class="empty">← 왼쪽에서 프로젝트를 선택하세요</div></div>
+    <div id="input-area">
+      <div class="row1">
+        <select id="who">
+          <option>김팀장</option><option>이대리</option>
+          <option>박과장</option><option>최주임</option><option>정사원</option>
+        </select>
+        <div class="tag-row">
+          <button class="tbtn" onclick="pickTag(this,'업체방문','sv')">업체방문</button>
+          <button class="tbtn" onclick="pickTag(this,'아이디어','si')">아이디어</button>
+          <button class="tbtn su" onclick="pickTag(this,'업데이트','su')">업데이트</button>
+        </div>
+      </div>
+      <div class="row2">
+        <textarea id="msg-input" rows="2" placeholder="방문 기록, 아이디어, 업데이트를 입력하세요... (Enter로 전송)"></textarea>
+        <button id="send-btn" onclick="sendMsg()">공유</button>
+      </div>
+      <div class="row3">
+        <input id="ai-input" placeholder="AI에게 질문: 예) 이 프로젝트 현재 상황 요약해줘" />
+        <button id="ai-btn" onclick="askAI()">AI 답변 ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, push, onValue, remove, set, get } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🔧 여기에 Firebase 설정을 붙여넣으세요
+// (아래 SETUP.md 안내 참고)
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const MEMBER_STYLES = {
+  '김팀장':{av:'av-0',lbl:'나'},'이대리':{av:'av-1',lbl:'이'},
+  '박과장':{av:'av-2',lbl:'박'},'최주임':{av:'av-3',lbl:'최'},'정사원':{av:'av-4',lbl:'정'}
+};
+const TAG_CLS = {'업체방문':'t-visit','아이디어':'t-idea','업데이트':'t-update','AI':'t-ai'};
+const ICONS = ['🔧','🚢','🔍','📦','🏭','✈️','💡','🤝','📋','🌐'];
+const DEFAULT_CHANNELS = [{id:'ch_a',name:'부품개발 프로젝트A',icon:'🔧'},{id:'ch_b',name:'중국 수입 건',icon:'🚢'},{id:'ch_c',name:'신규 업체 발굴',icon:'🔍'}];
+
+let app, db;
+let channels = [];
+let activeChId = null;
+let activeSub = null;
+let curTag = '업데이트';
+let apiKey = '';
+
+function fmt(ts){const d=new Date(ts);return(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+
+// ── API Key ──
+function saveApiKey(){
+  const v = document.getElementById('api-key-input').value.trim();
+  if(!v.startsWith('sk-')) return alert('올바른 API 키를 입력해주세요 (sk- 로 시작)');
+  apiKey = v;
+  localStorage.setItem('anthropic_key', v);
+  document.getElementById('key-modal').classList.remove('show');
+}
+window.saveApiKey = saveApiKey;
+window.showKeyModal = ()=>{ document.getElementById('key-modal').classList.add('show'); };
+
+function loadApiKey(){
+  apiKey = localStorage.getItem('anthropic_key')||'';
+  if(!apiKey) document.getElementById('key-modal').classList.add('show');
+}
+
+// ── Firebase Init ──
+function initFirebase(){
+  try{
+    app = initializeApp(FIREBASE_CONFIG);
+    db = getDatabase(app);
+    setSync('on');
+    loadChannels();
+  } catch(e){
+    setSync('off');
+    document.getElementById('sync-txt').textContent = 'Firebase 미설정';
+    loadLocalChannels();
+  }
+}
+
+function setSync(s){
+  const dot = document.getElementById('live-dot');
+  const txt = document.getElementById('sync-txt');
+  if(s==='on'){dot.className='live-dot pulse';txt.textContent='실시간 동기화';}
+  else if(s==='off'){dot.className='live-dot off';txt.textContent='오프라인';}
+}
+
+// ── Channels ──
+async function loadChannels(){
+  try{
+    const snap = await get(ref(db,'channels'));
+    if(snap.exists()){
+      channels = Object.entries(snap.val()).map(([id,v])=>({id,...v}));
+    } else {
+      channels = DEFAULT_CHANNELS;
+      for(const ch of channels) await set(ref(db,'channels/'+ch.id),{name:ch.name,icon:ch.icon});
+    }
+  } catch(e){ channels=[...DEFAULT_CHANNELS]; }
+  renderChannels();
+  if(channels.length) selectCh(channels[0].id);
+}
+function loadLocalChannels(){
+  const saved = localStorage.getItem('team_channels');
+  channels = saved ? JSON.parse(saved) : [...DEFAULT_CHANNELS];
+  renderChannels();
+  if(channels.length) selectCh(channels[0].id);
+}
+
+function renderChannels(counts={}){
+  const list = document.getElementById('ch-list');
+  list.innerHTML='';
+  channels.forEach(ch=>{
+    const n = counts[ch.id]||'';
+    const d = document.createElement('div');
+    d.className = 'channel'+(activeChId===ch.id?' active':'');
+    d.onclick = ()=>selectCh(ch.id);
+    d.innerHTML = `<span style="font-size:13px">${ch.icon}</span><span class="ch-name">${ch.name}</span>${n?`<span class="ch-badge">${n}</span>`:''}<span class="ch-del" onclick="delCh(event,'${ch.id}')">✕</span>`;
+    list.appendChild(d);
+  });
+}
+
+window.toggleNewCh = ()=>{
+  const b = document.getElementById('new-ch-box');
+  b.style.display = b.style.display==='block'?'none':'block';
+  if(b.style.display==='block') document.getElementById('new-ch-input').focus();
+};
+window.addCh = async ()=>{
+  const inp = document.getElementById('new-ch-input');
+  const name = inp.value.trim();
+  if(!name) return;
+  const icon = ICONS[Math.floor(Math.random()*ICONS.length)];
+  const id = 'ch_'+Date.now();
+  const ch = {id,name,icon};
+  channels.push(ch);
+  if(db) await set(ref(db,'channels/'+id),{name,icon});
+  else localStorage.setItem('team_channels',JSON.stringify(channels));
+  inp.value='';
+  window.toggleNewCh();
+  renderChannels();
+  selectCh(id);
+};
+window.delCh = async (e,id)=>{
+  e.stopPropagation();
+  if(!confirm('이 채널을 삭제할까요?')) return;
+  channels = channels.filter(c=>c.id!==id);
+  if(db){ await remove(ref(db,'channels/'+id)); await remove(ref(db,'msgs/'+id)); }
+  else localStorage.setItem('team_channels',JSON.stringify(channels));
+  if(activeChId===id){ activeChId=null; document.getElementById('feed').innerHTML='<div class="empty">← 프로젝트를 선택하세요</div>'; }
+  renderChannels();
+};
+
+// ── Messages ──
+function selectCh(id){
+  activeChId = id;
+  const ch = channels.find(c=>c.id===id);
+  document.getElementById('ch-bar-title').textContent = ch ? ch.icon+' '+ch.name : '';
+  document.getElementById('ch-bar-sub').textContent = '팀 공유 채널 · 실시간 동기화';
+  renderChannels();
+  if(activeSub) activeSub();
+  if(db){
+    activeSub = onValue(ref(db,'msgs/'+id), snap=>{
+      const msgs = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts) : [];
+      renderFeed(msgs);
+      document.getElementById('ch-bar-count').textContent = msgs.length+'건';
+    });
+  } else {
+    const saved = localStorage.getItem('msgs_'+id);
+    renderFeed(saved ? JSON.parse(saved) : []);
+  }
+}
+
+function renderFeed(msgs){
+  const feed = document.getElementById('feed');
+  const atBottom = feed.scrollHeight-feed.scrollTop <= feed.clientHeight+60;
+  if(!msgs.length){ feed.innerHTML='<div class="empty">아직 기록이 없어요.<br>첫 번째 기록을 남겨보세요!</div>'; return; }
+  feed.innerHTML='';
+  msgs.forEach(m=>{
+    const mv = MEMBER_STYLES[m.author]||{av:'av-0',lbl:'?'};
+    const isAI = m.tag==='AI';
+    const d = document.createElement('div');
+    d.className='msg';
+    d.innerHTML=`<div class="msg-av ${isAI?'':''}${mv.av}" style="${isAI?'background:var(--blue2);color:var(--blue);':''}">${isAI?'AI':mv.lbl}</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">${m.author}</span><span class="tag ${TAG_CLS[m.tag]||'t-update'}">${m.tag}</span><span class="msg-time">${fmt(m.ts)}</span></div><div class="${isAI?'ai-body':'msg-body'}">${m.text}</div></div>`;
+    feed.appendChild(d);
+  });
+  if(atBottom) feed.scrollTop = feed.scrollHeight;
+}
+
+window.pickTag = (btn,tag,cls)=>{
+  document.querySelectorAll('.tbtn').forEach(b=>b.className='tbtn');
+  btn.className='tbtn '+cls;
+  curTag=tag;
+};
+
+window.sendMsg = async ()=>{
+  if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
+  const inp = document.getElementById('msg-input');
+  const text = inp.value.trim();
+  if(!text) return;
+  const author = document.getElementById('who').value;
+  const msg = {author,tag:curTag,text,ts:Date.now()};
+  if(db){ await push(ref(db,'msgs/'+activeChId), msg); }
+  else {
+    const saved = localStorage.getItem('msgs_'+activeChId);
+    const msgs = saved ? JSON.parse(saved) : [];
+    msgs.push(msg);
+    localStorage.setItem('msgs_'+activeChId, JSON.stringify(msgs));
+    renderFeed(msgs);
+  }
+  inp.value='';
+};
+
+window.askAI = async ()=>{
+  if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
+  if(!apiKey) return window.showKeyModal();
+  const inp = document.getElementById('ai-input');
+  const q = inp.value.trim();
+  if(!q) return;
+  const btn = document.getElementById('ai-btn');
+  btn.disabled=true; btn.textContent='생각 중...'; inp.value='';
+
+  const feed = document.getElementById('feed');
+  const ld = document.createElement('div');
+  ld.className='msg'; ld.id='ai-ld';
+  ld.innerHTML=`<div class="msg-av" style="background:var(--blue2);color:var(--blue);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">AI</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">AI 에이전트</span><span class="tag t-ai">AI</span></div><div class="ai-body"><div class="dots"><span></span><span></span><span></span></div></div></div>`;
+  feed.appendChild(ld); feed.scrollTop=feed.scrollHeight;
+
+  const ch = channels.find(c=>c.id===activeChId);
+  let ctx='아직 기록이 없습니다.';
+  if(db){
+    const snap = await get(ref(db,'msgs/'+activeChId));
+    if(snap.exists()){
+      const msgs = Object.values(snap.val()).sort((a,b)=>a.ts-b.ts).slice(-30);
+      ctx = msgs.map(m=>`[${m.author}·${m.tag}] ${m.text}`).join('\n');
+    }
+  } else {
+    const saved = localStorage.getItem('msgs_'+activeChId);
+    if(saved){ const msgs=JSON.parse(saved).slice(-30); ctx=msgs.map(m=>`[${m.author}·${m.tag}] ${m.text}`).join('\n'); }
+  }
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`당신은 무역 및 부품 개발 팀의 AI 에이전트입니다. 현재 프로젝트: "${ch?.name}". 팀원들의 기록을 바탕으로 질문에 답하세요. 한국어로 간결하고 실용적으로 답하세요.\n\n팀 기록:\n${ctx}`,
+        messages:[{role:'user',content:q}]})
+    });
+    const data = await res.json();
+    const answer = data.content?.[0]?.text||'답변을 가져오지 못했어요.';
+    document.getElementById('ai-ld')?.remove();
+    const aiMsg = {author:'AI 에이전트',tag:'AI',text:`Q: ${q}\n\n${answer}`,ts:Date.now()};
+    if(db) await push(ref(db,'msgs/'+activeChId), aiMsg);
+    else {
+      const saved=localStorage.getItem('msgs_'+activeChId);
+      const msgs=saved?JSON.parse(saved):[];
+      msgs.push(aiMsg);
+      localStorage.setItem('msgs_'+activeChId,JSON.stringify(msgs));
+      renderFeed(msgs);
+    }
+  } catch(e){
+    document.getElementById('ai-ld')?.remove();
+    alert('AI 연결 오류: '+e.message);
+  }
+  btn.disabled=false; btn.textContent='AI 답변 ↗';
+};
+
+document.getElementById('msg-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.sendMsg();}});
+document.getElementById('ai-input').addEventListener('keydown',e=>{if(e.key==='Enter')window.askAI();});
+document.getElementById('new-ch-input').addEventListener('keydown',e=>{if(e.key==='Enter')window.addCh();});
+
+loadApiKey();
+initFirebase();
+</script>
+</body>
+</html>
