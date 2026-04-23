@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DL팀 — 무역 부품 개발</title>
+<title>DL팀</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DL팀">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -20,83 +18,62 @@
   --text:#1a1d2e;--text2:#5a5f7a;--text3:#9196b0;
   --blue:#4f7cff;--blue2:#c5d3ff;--blue3:#eef1ff;
   --teal:#0f9e6e;--teal2:#9fe0c8;--teal3:#e0f7ef;
-  --amber:#d4860a;--amber2:#fcd99a;--amber3:#fef6e0;
   --coral:#e04040;--coral2:#fbb0b0;--coral3:#fde8e8;
-  --purple:#6c4fd4;--purple2:#c9bcf5;--purple3:#f0ecff;
   --r:10px;--rl:14px;
 }
 html,body{height:100%;font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--text);}
 body{display:flex;flex-direction:column;overflow:hidden;}
 
-/* ── HEADER ── */
-#header{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;gap:10px;}
-.logo{width:28px;height:28px;background:linear-gradient(135deg,#4f7cff,#0f9e6e);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
-#app-name{font-size:14px;font-weight:600;}
-.sync-pill{display:flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--teal2);background:var(--teal3);color:var(--teal);white-space:nowrap;}
+#header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.logo{width:26px;height:26px;background:linear-gradient(135deg,#4f7cff,#0f9e6e);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+#app-title{font-size:14px;font-weight:600;margin-left:8px;}
+.sync-pill{display:flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--teal2);background:var(--teal3);color:var(--teal);}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
-.live-dot.off{background:var(--border2);}
 .live-dot.pulse{animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* ── LAYOUT ── */
 #body{display:flex;flex:1;overflow:hidden;}
+#sidebar{width:200px;border-right:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left 0.25s;}
+#main{flex:1;display:flex;flex-direction:column;min-width:0;}
 
-/* ── SIDEBAR ── */
-#sidebar{width:210px;border-right:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
 .sb-label{padding:12px 13px 5px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
 .member{display:flex;align-items:center;gap:8px;padding:6px 13px;font-size:12px;color:var(--text2);}
 .av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
-.av-0{background:var(--blue2);color:var(--blue);}
-.av-1{background:var(--teal3);color:var(--teal);}
-.av-2{background:var(--coral3);color:var(--coral);}
-.av-3{background:var(--purple3);color:var(--purple);}
-.av-4{background:var(--amber3);color:var(--amber);}
-
-.divider{height:1px;background:var(--border);margin:7px 0;}
-.ch-top{display:flex;align-items:center;justify-content:space-between;padding:10px 13px 4px;}
-.add-btn{width:20px;height:20px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.av-0{background:#dde8ff;color:#2a5cd4;}
+.av-1{background:#d4f5e9;color:#0a7a52;}
+.av-2{background:#fde8e8;color:#b03030;}
+.av-3{background:#ede8ff;color:#5030b0;}
+.av-4{background:#fff3d4;color:#b07a00;}
+.divider{height:1px;background:var(--border);margin:6px 0;}
+.ch-top{display:flex;align-items:center;justify-content:space-between;padding:8px 13px 4px;}
+.add-btn{width:20px;height:20px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 .add-btn:hover{color:var(--blue);border-color:var(--blue);}
-.channel{display:flex;align-items:center;gap:7px;padding:7px 13px;cursor:pointer;border-left:2px solid transparent;transition:.15s;position:relative;}
+.channel{display:flex;align-items:center;gap:7px;padding:7px 13px;cursor:pointer;border-left:2px solid transparent;transition:.15s;}
 .channel:hover{background:var(--bg3);}
 .channel.active{background:var(--bg3);border-left-color:var(--blue);}
 .ch-name{font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .channel.active .ch-name{color:var(--text);font-weight:500;}
-.ch-badge{font-size:10px;background:var(--blue2);color:var(--blue);border-radius:20px;padding:1px 6px;flex-shrink:0;}
-.ch-del{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 5px;border-radius:4px;display:none;}
+.ch-del{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 5px;display:none;}
 .channel:hover .ch-del{display:block;}
 .ch-del:hover{color:var(--coral);}
-#new-ch-box{display:none;padding:8px 13px;border-top:1px solid var(--border);}
-#new-ch-box input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:6px 10px;font-size:12px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:6px;}
-#new-ch-box input:focus{outline:none;border-color:var(--blue);}
-.mini-btns{display:flex;gap:5px;}
-.mini-btns button{flex:1;padding:5px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;}
-.mini-btns .ok{background:var(--blue);border-color:var(--blue);color:#fff;}
 
-/* ── MAIN ── */
-#main{flex:1;display:flex;flex-direction:column;min-width:0;}
 #ch-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 #ch-bar-title{font-size:14px;font-weight:600;}
 #ch-bar-sub{font-size:11px;color:var(--text3);margin-top:2px;}
-#ch-bar-count{font-size:11px;color:var(--text3);}
 
 #feed{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
 #feed::-webkit-scrollbar{width:4px;}
 #feed::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
 .msg{display:flex;gap:9px;animation:fi .2s ease;}
-@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+@keyframes fi{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 .msg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:1px;}
 .msg-r{flex:1;min-width:0;}
-.msg-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+.msg-meta{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
 .msg-name{font-size:12px;font-weight:600;}
-
-
-
-
-
 .msg-time{font-size:10px;color:var(--text3);margin-left:auto;}
-.msg-body{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
-.ai-body{background:var(--bg3);border:1px solid var(--blue2);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.msg-body{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.ai-body{background:var(--blue3);border:1px solid var(--blue2);border-radius:var(--r);padding:9px 12px;font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word;}
 .dots{display:flex;gap:4px;padding:2px 0;}
 .dots span{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:db 1.2s infinite;}
 .dots span:nth-child(2){animation-delay:.2s;}
@@ -104,182 +81,105 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 @keyframes db{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
 .empty{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px;line-height:2;}
 
-/* ── INPUT ── */
-#input-area{border-top:1px solid var(--border);background:var(--bg2);padding:11px 14px;flex-shrink:0;}
-.row1{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-#who{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:4px 9px;font-size:12px;color:var(--text);font-family:'Pretendard',sans-serif;cursor:pointer;}
-#who option{background:var(--bg3);}
-
-
-
-
-
-.row2{display:flex;gap:7px;margin-bottom:8px;}
+#input-area{border-top:1px solid var(--border);background:var(--bg2);padding:10px 14px;flex-shrink:0;}
+.user-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+#cur-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
+#cur-name{font-size:12px;font-weight:500;color:var(--text2);}
+.msg-row{display:flex;gap:7px;margin-bottom:8px;}
 #msg-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;resize:none;line-height:1.5;}
 #msg-input:focus{outline:none;border-color:var(--blue);}
 #msg-input::placeholder{color:var(--text3);}
 #send-btn{padding:9px 16px;background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;}
 #send-btn:hover{opacity:.85;}
-.row3{display:flex;gap:7px;}
+.ai-row{display:flex;gap:7px;}
 #ai-input{flex:1;background:var(--blue3);border:1px solid var(--blue2);border-radius:var(--r);padding:8px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;}
 #ai-input:focus{outline:none;border-color:var(--blue);}
-#ai-input::placeholder{color:var(--blue);opacity:.5;}
+#ai-input::placeholder{color:var(--blue);opacity:.6;}
 #ai-btn{padding:8px 14px;background:var(--blue3);border:1px solid var(--blue2);border-radius:var(--r);color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;white-space:nowrap;}
 #ai-btn:hover{background:var(--blue2);}
 #ai-btn:disabled{opacity:.5;cursor:not-allowed;}
 
-/* ── INVITE CODE MODAL ── */
-#invite-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;}
-#invite-modal.show{display:flex;}
-.invite-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:28px;width:340px;max-width:90vw;}
-.invite-box h2{font-size:15px;font-weight:600;margin-bottom:6px;}
-.invite-box p{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;}
-.invite-box input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:8px 11px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:10px;}
-.invite-box input:focus{outline:none;border-color:var(--blue);}
-.invite-box button{width:100%;padding:9px;background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Pretendard',sans-serif;}
-.invite-err{font-size:11px;color:var(--coral);margin-top:6px;display:none;}
-/* ── NEW CHANNEL MODAL ── */
-#new-ch-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;}
-#new-ch-modal.show{display:flex;}
-.new-ch-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:28px;width:360px;max-width:90vw;}
-.new-ch-box h2{font-size:15px;font-weight:600;margin-bottom:16px;}
-.field-label{font-size:11px;color:var(--text3);margin-bottom:5px;}
-.new-ch-box input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:8px 11px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:12px;}
-.new-ch-box input:focus{outline:none;border-color:var(--blue);}
-.member-checks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-.mcheck{display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 10px;cursor:pointer;font-size:12px;color:var(--text2);transition:.15s;}
-.mcheck.on{background:var(--blue3);border-color:var(--blue2);color:var(--blue);}
-.new-ch-btns{display:flex;gap:8px;}
-.new-ch-btns button{flex:1;padding:9px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Pretendard',sans-serif;}
-.new-ch-btns .ok{background:var(--blue);border-color:var(--blue);color:#fff;}
-/* ── USER SELECT MODAL ── */
-#user-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;}
-#user-modal.show{display:flex;}
-.user-modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:32px 28px;width:340px;max-width:90vw;text-align:center;}
-.user-modal-box h2{font-size:16px;font-weight:600;margin-bottom:6px;}
-.user-modal-box p{font-size:12px;color:var(--text2);margin-bottom:20px;}
-.user-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:13px;cursor:pointer;font-family:'Pretendard',sans-serif;transition:.15s;}
-.user-btn:hover{border-color:var(--blue);background:var(--bg4);}
-.user-btn:last-child{margin-bottom:0;}
-.user-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
-#current-user-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);}
-#current-user-pill .user-av{width:22px;height:22px;font-size:10px;}
+/* Modals */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;}
+.overlay.show{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:28px;width:340px;max-width:90vw;}
+.modal h2{font-size:15px;font-weight:600;margin-bottom:14px;}
+.modal p{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6;}
+.modal input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:8px 11px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;margin-bottom:10px;}
+.modal input:focus{outline:none;border-color:var(--blue);}
+.modal-btns{display:flex;gap:8px;margin-top:4px;}
+.modal-btns button{flex:1;padding:9px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Pretendard',sans-serif;}
+.modal-btns .ok{background:var(--blue);border-color:var(--blue);color:#fff;}
+.user-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:13px;cursor:pointer;font-family:'Pretendard',sans-serif;}
+.user-btn:hover{border-color:var(--blue);}
+.err{font-size:11px;color:var(--coral);margin-bottom:8px;display:none;}
 
-/* ── MOBILE RESPONSIVE ── */
-@media (max-width: 600px) {
-  #sidebar{
-    position: fixed;
-    left: -210px;
-    top: 0;
-    height: 100%;
-    z-index: 50;
-    transition: left 0.25s ease;
-    width: 210px;
-  }
-  #sidebar.open{ left: 0; }
-  #overlay{
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 40;
-  }
-  #overlay.show{ display: block; }
-  #body{ flex-direction: column; }
-  #main{ flex: 1; min-height: 0; }
-  #header{ padding: 8px 12px; }
-  #app-name{ font-size: 13px; }
-  .sync-pill{ font-size: 10px; padding: 2px 8px; }
-  #ch-bar{ padding: 8px 12px; }
-  #ch-bar-title{ font-size: 13px; }
-  #feed{ padding: 10px 12px; gap: 8px; }
-  .msg-body, .ai-body{ font-size: 13px; padding: 8px 10px; }
-  #input-area{ padding: 8px 10px; }
-  .row2{ gap: 6px; }
-  #msg-input{ font-size: 13px; padding: 8px 10px; }
-  #send-btn{ padding: 8px 12px; font-size: 12px; }
-  #ai-input{ font-size: 12px; padding: 7px 10px; }
-  #ai-btn{ padding: 7px 10px; font-size: 12px; }
-  .row3{ flex-direction: row; }
-  .user-modal-box, .invite-box, .new-ch-box{ width: 90vw; padding: 22px 18px; }
+/* Mobile */
+#menu-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:16px;cursor:pointer;}
+#mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40;}
+@media(min-width:601px){#menu-btn{display:none;}}
+@media(max-width:600px){
+  #sidebar{position:fixed;left:-200px;top:0;height:100%;z-index:50;width:200px;}
+  #sidebar.open{left:0;}
+  #mob-overlay.show{display:block;}
+  #feed{padding:10px 12px;}
+  .msg-body,.ai-body{font-size:13px;}
+  #input-area{padding:8px 10px;}
+  #msg-input{font-size:13px;}
 }
-@media (min-width: 601px) {
-  #overlay{ display: none !important; }
-}
-#menu-btn{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: 1px solid var(--border2);
-  border-radius: var(--r);
-  color: var(--text2);
-  font-size: 16px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-@media (min-width: 601px){ #menu-btn{ display: none; } }
 </style>
 </head>
 <body>
 
-<!-- Join Channel Modal -->
-<div id="invite-modal">
-  <div class="invite-box">
-    <h2>🔒 채널 입장</h2>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">채널 생성자에게 받은 초대 코드를 입력하세요.<br>코드가 맞으면 채널이 추가돼요.</p>
-    <input type="password" id="invite-code-input" placeholder="초대 코드 입력..." />
-    <p class="invite-err" id="invite-err">코드가 맞지 않아요. 다시 확인해주세요.</p>
-    <button onclick="submitInviteCode()">입장하기</button>
-    <button onclick="document.getElementById('invite-modal').classList.remove('show')" style="margin-top:8px;width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;font-family:'Pretendard',sans-serif;">취소</button>
+<div id="mob-overlay" onclick="closeSidebar()"></div>
+
+<!-- User Modal -->
+<div class="overlay" id="user-modal">
+  <div class="modal">
+    <h2>👋 나는 누구인가요?</h2>
+    <p>선택하면 이 기기에서 계속 유지돼요.</p>
+    <button class="user-btn" onclick="selectUser('Aron')"><div class="av av-0">A</div>Aron</button>
+    <button class="user-btn" onclick="selectUser('Namil')"><div class="av av-1">N</div>Namil</button>
+    <button class="user-btn" onclick="selectUser('김형자')"><div class="av av-2">김</div>김형자</button>
+    <button class="user-btn" onclick="selectUser('Byungjo')"><div class="av av-3">B</div>Byungjo</button>
+    <button class="user-btn" onclick="selectUser('AA')" style="margin-bottom:0"><div class="av av-4">A</div>AA</button>
   </div>
 </div>
 
 <!-- New Channel Modal -->
-<div id="new-ch-modal">
-  <div class="new-ch-box">
+<div class="overlay" id="new-ch-modal">
+  <div class="modal">
     <h2>새 프로젝트 채널</h2>
-    <div class="field-label">채널 이름</div>
-    <input id="nch-name" placeholder="예) 부품개발 프로젝트B" maxlength="24" />
-    <div class="field-label">초대 코드 (채널 비밀번호)</div>
-    <input id="nch-code" type="password" placeholder="팀원들과 공유할 코드 설정..." maxlength="20" />
-    <div class="field-label" style="margin-bottom:8px;">참여 멤버 선택</div>
-    <div class="member-checks" id="member-checks"></div>
-    <div class="new-ch-btns">
+    <input id="nch-name" placeholder="채널 이름" maxlength="24"/>
+    <input id="nch-code" type="password" placeholder="초대 코드 설정 (팀원에게 공유)"/>
+    <div class="modal-btns">
       <button onclick="document.getElementById('new-ch-modal').classList.remove('show')">취소</button>
-      <button class="ok" onclick="submitNewCh()">채널 만들기</button>
+      <button class="ok" onclick="submitNewCh()">만들기</button>
     </div>
   </div>
 </div>
 
-<!-- User Select Modal -->
-<div id="user-modal">
-  <div class="user-modal-box">
-    <h2>👋 안녕하세요!</h2>
-    <p>나는 누구인가요? 선택하면 이 기기에서 계속 유지돼요.</p>
-    <button class="user-btn" onclick="selectUser('Aron')"><div class="user-av av-0">A</div>Aron</button>
-    <button class="user-btn" onclick="selectUser('Namil')"><div class="user-av av-1">N</div>Namil</button>
-    <button class="user-btn" onclick="selectUser('김형자')"><div class="user-av av-2">김</div>김형자</button>
-    <button class="user-btn" onclick="selectUser('Byungjo')"><div class="user-av av-3">B</div>Byungjo</button>
-    <button class="user-btn" onclick="selectUser('AA')"><div class="user-av av-4">A</div>AA</button>
+<!-- Join Channel Modal -->
+<div class="overlay" id="join-modal">
+  <div class="modal">
+    <h2>🔒 채널 입장</h2>
+    <p>초대 코드를 입력하세요.</p>
+    <input type="password" id="join-code" placeholder="초대 코드"/>
+    <p class="err" id="join-err">코드가 맞지 않아요.</p>
+    <div class="modal-btns">
+      <button onclick="document.getElementById('join-modal').classList.remove('show')">취소</button>
+      <button class="ok" onclick="submitJoin()">입장</button>
+    </div>
   </div>
 </div>
 
-</div>
-
-<div id="overlay" onclick="closeSidebar()"></div>
 <div id="header">
-  <div style="display:flex;align-items:center;gap:9px;">
+  <div style="display:flex;align-items:center;gap:8px;">
     <button id="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="logo">T</div>
-    <span id="app-name">DL팀</span>
+    <div class="logo">D</div>
+    <span id="app-title">DL팀</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <div class="sync-pill"><div class="live-dot" id="live-dot"></div><span id="sync-txt">연결 중...</span></div>
-    
-  </div>
+  <div class="sync-pill"><div class="live-dot" id="live-dot"></div><span id="sync-txt">연결 중...</span></div>
 </div>
 
 <div id="body">
@@ -293,46 +193,44 @@ body{display:flex;flex-direction:column;overflow:hidden;}
     <div class="divider"></div>
     <div class="ch-top">
       <span class="sb-label" style="padding:0;">프로젝트</span>
-      <button class="add-btn" onclick="openNewChModal()" title="새 프로젝트">+</button>
+      <button class="add-btn" onclick="document.getElementById('new-ch-modal').classList.add('show')">+</button>
     </div>
     <div id="ch-list"></div>
+    <div style="padding:8px 13px;">
+      <button onclick="document.getElementById('join-modal').classList.add('show')" style="width:100%;padding:6px;background:transparent;border:1px dashed var(--border2);border-radius:var(--r);color:var(--text3);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;">+ 초대 코드로 채널 입장</button>
+    </div>
   </div>
 
   <div id="main">
     <div id="ch-bar">
       <div><div id="ch-bar-title">채널을 선택하세요</div><div id="ch-bar-sub">프로젝트별로 기록이 분리됩니다</div></div>
-      <span id="ch-bar-count"></span>
     </div>
-    <div id="feed"><div class="empty">← 왼쪽에서 프로젝트를 선택하세요</div></div>
+    <div id="feed"><div class="empty">← 채널을 선택하거나 새로 만드세요</div></div>
     <div id="input-area">
-      <div class="row1">
-        <div id="current-user-pill">
-          <div class="user-av av-0" id="current-user-av">A</div>
-          <span id="current-user-name">Aron</span>
-        </div>
+      <div class="user-row">
+        <div class="av" id="cur-av">?</div>
+        <span id="cur-name">로딩 중...</span>
       </div>
-      <div class="row2">
-        <textarea id="msg-input" rows="2" placeholder="기록, 메모, 아이디어를 자유롭게 입력하세요... (Enter로 전송)"></textarea>
+      <div class="msg-row">
+        <textarea id="msg-input" rows="2" placeholder="기록, 메모, 아이디어를 입력하세요... (Enter로 전송)"></textarea>
         <button id="send-btn" onclick="sendMsg()">공유</button>
       </div>
-      <div class="row3">
-        <input id="ai-input" placeholder="AI에게 질문: 예) 이 프로젝트 현재 상황 요약해줘" />
+      <div class="ai-row">
+        <input id="ai-input" placeholder="AI에게 질문: 예) 현재 상황 요약해줘"/>
         <button id="ai-btn" onclick="askAI()">AI 답변 ↗</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script>
-// Global functions accessible from HTML onclick
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('show');
+  document.getElementById('mob-overlay').classList.toggle('show');
 }
 function closeSidebar(){
   document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('mob-overlay').classList.remove('show');
 }
 </script>
 
@@ -340,9 +238,6 @@ function closeSidebar(){
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getDatabase, ref, push, onValue, remove, set, get } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 🔧 여기에 Firebase 설정을 붙여넣으세요
-// (아래 SETUP.md 안내 참고)
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBDGJs1uPIBu_QI78iUbBS9CYZ569gqadQ",
   authDomain: "team-agent-5b4c3.firebaseapp.com",
@@ -350,178 +245,128 @@ const FIREBASE_CONFIG = {
   projectId: "team-agent-5b4c3",
   storageBucket: "team-agent-5b4c3.firebasestorage.app",
   messagingSenderId: "267688604166",
-  appId: "1:267688604166:web:bba0abcfa4913db9bfc987",
-  measurementId: "G-FZTZHVM2FJ"
+  appId: "1:267688604166:web:bba0abcfa4913db9bfc987"
 };
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-const MEMBER_STYLES = {
-  'Aron':{av:'av-0',lbl:'A'},'Namil':{av:'av-1',lbl:'N'},
-  '김형자':{av:'av-2',lbl:'김'},'Byungjo':{av:'av-3',lbl:'B'},'AA':{av:'av-4',lbl:'A'}
+const MEMBER_STYLE = {
+  'Aron':   {cls:'av-0',lbl:'A'},
+  'Namil':  {cls:'av-1',lbl:'N'},
+  '김형자': {cls:'av-2',lbl:'김'},
+  'Byungjo':{cls:'av-3',lbl:'B'},
+  'AA':     {cls:'av-4',lbl:'A'}
 };
-const ICONS = ['🔧','🚢','🔍','📦','🏭','✈️','💡','🤝','📋','🌐'];
-const DEFAULT_CHANNELS = []; // No default channels — all created with invite codes
+const ICONS = ['📦','🚢','🔍','🔧','🏭','✈️','💡','🤝','📋','🌐'];
 
-let app, db;
-let channels = [];
-let activeChId = null;
-let activeSub = null;
-let curTag = '일반';
-let apiKey = '';
+let db, currentUser='', activeChId=null, activeSub=null;
 
-function fmt(ts){const d=new Date(ts);return(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-
-// ── API Key ──
-
-// ── User Management ──
-let currentUser = 'Aron';
-const MEMBER_AV_MAP = {'Aron':'av-0','Namil':'av-1','김형자':'av-2','Byungjo':'av-3','AA':'av-4'};
-const MEMBER_LBL_MAP = {'Aron':'A','Namil':'N','김형자':'김','Byungjo':'B','AA':'A'};
-
-function selectUser(name){
-  currentUser = name;
-  localStorage.setItem('team_user', name);
-  document.getElementById('current-user-name').textContent = name;
-  const av = MEMBER_AV_MAP[name]||'av-0';
-  const lbl = MEMBER_LBL_MAP[name]||name[0];
-  const pill = document.getElementById('current-user-av');
-  pill.className = 'user-av '+av;
-  pill.textContent = lbl;
-  document.getElementById('user-modal').classList.remove('show');
-}
-
-
-function loadUser(){
-  const saved = localStorage.getItem('team_user');
-  if(saved){ selectUser(saved); }
-  else { document.getElementById('user-modal').classList.add('show'); }
-}
-
-
-// ── Firebase Init ──
-function initFirebase(){
-  try{
-    app = initializeApp(FIREBASE_CONFIG);
-    db = getDatabase(app);
-    setSync('on');
-    loadChannels();
-  } catch(e){
-    setSync('off');
-    document.getElementById('sync-txt').textContent = 'Firebase 미설정';
-    loadLocalChannels();
-  }
-}
-
-function setSync(s){
-  const dot = document.getElementById('live-dot');
-  const txt = document.getElementById('sync-txt');
-  if(s==='on'){dot.className='live-dot pulse';txt.textContent='실시간 동기화';}
-  else if(s==='off'){dot.className='live-dot off';txt.textContent='오프라인';}
-}
-
-// ── Channels ──
-const ALL_MEMBERS = ['Aron','Namil','김형자','Byungjo','AA'];
-
-async function loadChannels(){
-  try{
-    const snap = await get(ref(db,'channels'));
-    if(snap.exists()){
-      channels = Object.entries(snap.val()).map(([id,v])=>({id,...v}));
-    } else {
-      channels = [];
-    }
-  } catch(e){ channels=[...DEFAULT_CHANNELS]; }
-  renderChannels();
-  autoJoinChannels();
-}
-function loadLocalChannels(){
-  const saved = localStorage.getItem('team_channels');
-  channels = saved ? JSON.parse(saved) : [...DEFAULT_CHANNELS];
-  renderChannels();
-  autoJoinChannels();
-}
-
-function getJoinedChannels(){
-  // Check both localStorage and memory
-  const saved = localStorage.getItem('joined_'+currentUser);
-  return saved ? JSON.parse(saved) : [];
-}
-function saveJoinedChannels(ids){
-  localStorage.setItem('joined_'+currentUser, JSON.stringify(ids));
-  // Also save to Firebase per user
-  if(db && currentUser){
-    set(ref(db, 'joined/'+currentUser), ids).catch(()=>{});
-  }
-}
-function isJoined(chId){ return getJoinedChannels().includes(chId); }
-function joinChannel(chId){
-  const joined = getJoinedChannels();
-  if(!joined.includes(chId)){ joined.push(chId); saveJoinedChannels(joined); }
-}
-
-async function autoJoinChannels(){
-  // Load joined channels from Firebase for this user
-  if(db && currentUser){
-    try{
-      const snap = await get(ref(db, 'joined/'+currentUser));
-      if(snap.exists()){
-        const firebaseJoined = snap.val();
-        // Merge with localStorage
-        const local = getJoinedChannels();
-        const merged = [...new Set([...local, ...firebaseJoined])];
-        localStorage.setItem('joined_'+currentUser, JSON.stringify(merged));
-      }
-    }catch(e){}
-  }
-  renderChannels();
-  const joinedIds = getJoinedChannels();
-  const joined = channels.filter(ch=>joinedIds.includes(ch.id));
-  if(joined.length) selectCh(joined[0].id);
-  else document.getElementById('feed').innerHTML='<div class="empty">+ 버튼으로 채널을 만들거나 초대 코드로 입장하세요</div>';
-}
-
-// SHA-256 hash for secure code comparison
+// ── SHA256 ──
 async function sha256(msg){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-function renderChannels(){
-  const list = document.getElementById('ch-list');
-  list.innerHTML='';
-  // Only show channels the user has joined (knows the code for)
-  const joined = getJoinedChannels();
-  channels.filter(ch=>joined.includes(ch.id)).forEach(ch=>{
-    const d = document.createElement('div');
-    d.className = 'channel'+(activeChId===ch.id?' active':'');
-    d.onclick = ()=>selectCh(ch.id);
-    d.innerHTML = `<span style="font-size:13px">${ch.icon}</span><span class="ch-name">${ch.name}</span><span class="ch-del" onclick="delCh(event,'${ch.id}')">✕</span>`;
-    list.appendChild(d);
-  });
-  // Show "채널 입장" button at bottom
-  const joinBtn = document.createElement('div');
-  joinBtn.style.cssText='padding:8px 13px;';
-  joinBtn.innerHTML=`<button onclick="openJoinModal()" style="width:100%;padding:6px;background:transparent;border:1px dashed var(--border2);border-radius:var(--r);color:var(--text3);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;">+ 초대 코드로 채널 입장</button>`;
-  list.appendChild(joinBtn);
+// ── Time ──
+function fmt(ts){
+  const d=new Date(ts);
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
 
-// ── New Channel Modal ──
-window.openNewChModal = ()=>{
-  const checks = document.getElementById('member-checks');
-  checks.innerHTML='';
-  ALL_MEMBERS.forEach(m=>{
-    const d = document.createElement('div');
-    d.className='mcheck'+(m===currentUser?' on':'');
-    d.dataset.member=m;
-    if(m===currentUser) d.style.pointerEvents='none';
-    d.onclick=()=>d.classList.toggle('on');
-    d.textContent=m;
-    checks.appendChild(d);
-  });
-  document.getElementById('new-ch-modal').classList.add('show');
+// ── User ──
+window.selectUser = function(name){
+  currentUser = name;
+  const s = MEMBER_STYLE[name]||{cls:'av-0',lbl:'?'};
+  const av = document.getElementById('cur-av');
+  av.className = 'av '+s.cls;
+  av.textContent = s.lbl;
+  document.getElementById('cur-name').textContent = name;
+  document.getElementById('user-modal').classList.remove('show');
+  // Save to Firebase
+  if(db) set(ref(db,'users/'+name+'/lastSeen'), Date.now());
+  // Load this user's joined channels
+  loadJoinedAndRender();
 };
 
-window.submitNewCh = async ()=>{
+function initUser(){
+  const saved = localStorage.getItem('dl_user');
+  if(saved && MEMBER_STYLE[saved]){
+    selectUser(saved);
+  } else {
+    document.getElementById('user-modal').classList.add('show');
+  }
+}
+
+// Override selectUser to also save to localStorage
+const _origSelect = window.selectUser;
+window.selectUser = function(name){
+  localStorage.setItem('dl_user', name);
+  _origSelect(name);
+};
+
+// ── Channels ──
+let allChannels = [];
+
+async function loadAllChannels(){
+  try{
+    const snap = await get(ref(db,'channels'));
+    allChannels = snap.exists() ? Object.entries(snap.val()).map(([id,v])=>({id,...v})) : [];
+  } catch(e){ allChannels=[]; }
+}
+
+async function loadJoinedAndRender(){
+  if(!currentUser) return;
+  await loadAllChannels();
+  // Get joined channels for this user from Firebase
+  let joined = [];
+  try{
+    const snap = await get(ref(db,'joined/'+currentUser));
+    joined = snap.exists() ? snap.val() : [];
+  } catch(e){
+    // Fallback to localStorage
+    const saved = localStorage.getItem('joined_'+currentUser);
+    joined = saved ? JSON.parse(saved) : [];
+  }
+  renderChannels(joined);
+  // Auto-select first joined channel
+  const first = allChannels.find(ch=>joined.includes(ch.id));
+  if(first) selectCh(first.id);
+}
+
+function renderChannels(joined){
+  const list = document.getElementById('ch-list');
+  list.innerHTML='';
+  const myChannels = allChannels.filter(ch=>joined.includes(ch.id));
+  myChannels.forEach(ch=>{
+    const d = document.createElement('div');
+    d.className='channel'+(activeChId===ch.id?' active':'');
+    d.onclick=()=>selectCh(ch.id);
+    d.innerHTML=`<span style="font-size:13px">${ch.icon||'📦'}</span><span class="ch-name">${ch.name}</span><span class="ch-del" onclick="delCh(event,'${ch.id}')">✕</span>`;
+    list.appendChild(d);
+  });
+}
+
+async function saveJoined(joined){
+  localStorage.setItem('joined_'+currentUser, JSON.stringify(joined));
+  if(db && currentUser){
+    await set(ref(db,'joined/'+currentUser), joined);
+  }
+}
+
+async function getJoined(){
+  // Always check Firebase first for persistence
+  try{
+    const snap = await get(ref(db,'joined/'+currentUser));
+    if(snap.exists()){
+      const j = snap.val();
+      localStorage.setItem('joined_'+currentUser, JSON.stringify(j));
+      return j;
+    }
+  }catch(e){}
+  const saved = localStorage.getItem('joined_'+currentUser);
+  return saved ? JSON.parse(saved) : [];
+}
+
+// ── New Channel ──
+window.submitNewCh = async function(){
   const name = document.getElementById('nch-name').value.trim();
   const code = document.getElementById('nch-code').value.trim();
   if(!name) return alert('채널 이름을 입력하세요.');
@@ -529,207 +374,144 @@ window.submitNewCh = async ()=>{
   const codeHash = await sha256(code);
   const icon = ICONS[Math.floor(Math.random()*ICONS.length)];
   const id = 'ch_'+Date.now();
-  const ch = {id,name,icon,codeHash};
-  channels.push(ch);
-  // Store only hashed code — original code never saved
-  if(db) await set(ref(db,'channels/'+id),{name,icon,codeHash});
-  else { const saved=JSON.parse(localStorage.getItem('team_channels')||'[]'); saved.push(ch); localStorage.setItem('team_channels',JSON.stringify(saved)); }
-  joinChannel(id);
+  // Save channel to Firebase
+  await set(ref(db,'channels/'+id), {name, icon, codeHash});
+  allChannels.push({id, name, icon, codeHash});
+  // Join this channel
+  const joined = await getJoined();
+  joined.push(id);
+  await saveJoined(joined);
   document.getElementById('nch-name').value='';
   document.getElementById('nch-code').value='';
   document.getElementById('new-ch-modal').classList.remove('show');
-  renderChannels();
+  renderChannels(joined);
   selectCh(id);
 };
 
-// ── Join Channel by Code ──
-window.openJoinModal = ()=>{
-  document.getElementById('invite-code-input').value='';
-  document.getElementById('invite-err').style.display='none';
-  document.getElementById('invite-modal').classList.add('show');
-};
-window.submitInviteCode = async ()=>{
-  const input = document.getElementById('invite-code-input').value.trim();
-  if(!input) return;
-  const inputHash = await sha256(input);
-  // Search all channels for matching code hash
-  let matched = null;
-  for(const ch of channels){
-    const chHash = ch.codeHash || await sha256(ch.code||'');
-    if(chHash === inputHash){ matched=ch; break; }
-  }
+// ── Join Channel ──
+window.submitJoin = async function(){
+  const code = document.getElementById('join-code').value.trim();
+  if(!code) return;
+  const inputHash = await sha256(code);
+  await loadAllChannels();
+  const matched = allChannels.find(ch=>ch.codeHash===inputHash);
   if(matched){
-    joinChannel(matched.id);
-    document.getElementById('invite-modal').classList.remove('show');
-    renderChannels();
+    const joined = await getJoined();
+    if(!joined.includes(matched.id)) joined.push(matched.id);
+    await saveJoined(joined);
+    document.getElementById('join-code').value='';
+    document.getElementById('join-err').style.display='none';
+    document.getElementById('join-modal').classList.remove('show');
+    renderChannels(joined);
     selectCh(matched.id);
   } else {
-    document.getElementById('invite-err').style.display='block';
+    document.getElementById('join-err').style.display='block';
   }
 };
 
-window.delCh = async (e,id)=>{
+// ── Delete Channel ──
+window.delCh = async function(e, id){
   e.stopPropagation();
-  if(!confirm('이 채널을 삭제할까요?')) return;
-  channels = channels.filter(c=>c.id!==id);
-  if(db){ await remove(ref(db,'channels/'+id)); await remove(ref(db,'msgs/'+id)); }
-  else localStorage.setItem('team_channels',JSON.stringify(channels));
-  const joined = getJoinedChannels().filter(j=>j!==id);
-  saveJoinedChannels(joined);
-  if(activeChId===id){ activeChId=null; document.getElementById('feed').innerHTML='<div class="empty">← 프로젝트를 선택하세요</div>'; }
-  renderChannels();
+  if(!confirm('채널을 삭제할까요?')) return;
+  await remove(ref(db,'channels/'+id));
+  await remove(ref(db,'msgs/'+id));
+  allChannels = allChannels.filter(c=>c.id!==id);
+  const joined = (await getJoined()).filter(j=>j!==id);
+  await saveJoined(joined);
+  if(activeChId===id){ activeChId=null; document.getElementById('feed').innerHTML='<div class="empty">← 채널을 선택하거나 새로 만드세요</div>'; }
+  renderChannels(joined);
 };
 
 // ── Messages ──
 function selectCh(id){
-  if(window.innerWidth <= 600) closeSidebar();
-  activeChId = id;
-  const ch = channels.find(c=>c.id===id);
+  if(window.innerWidth<=600) closeSidebar();
+  activeChId=id;
+  const ch = allChannels.find(c=>c.id===id);
   document.getElementById('ch-bar-title').textContent = ch ? ch.icon+' '+ch.name : '';
   document.getElementById('ch-bar-sub').textContent = '팀 공유 채널 · 실시간 동기화';
-  renderChannels();
+  // Re-render to update active state
+  getJoined().then(joined=>renderChannels(joined));
+  // Subscribe to messages
   if(activeSub) activeSub();
-  if(db){
-    activeSub = onValue(ref(db,'msgs/'+id), snap=>{
-      const msgs = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts) : [];
-      renderFeed(msgs);
-      document.getElementById('ch-bar-count').textContent = msgs.length+'건';
-    });
-  } else {
-    const saved = localStorage.getItem('msgs_'+id);
-    renderFeed(saved ? JSON.parse(saved) : []);
-  }
+  activeSub = onValue(ref(db,'msgs/'+id), snap=>{
+    const msgs = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts) : [];
+    renderFeed(msgs);
+  });
 }
 
 function renderFeed(msgs){
   const feed = document.getElementById('feed');
-  const atBottom = feed.scrollHeight-feed.scrollTop <= feed.clientHeight+60;
+  const atBottom = feed.scrollHeight-feed.scrollTop<=feed.clientHeight+60;
   if(!msgs.length){ feed.innerHTML='<div class="empty">아직 기록이 없어요.<br>첫 번째 기록을 남겨보세요!</div>'; return; }
   feed.innerHTML='';
   msgs.forEach(m=>{
-    const mv = MEMBER_STYLES[m.author]||{av:'av-0',lbl:'?'};
-    const isAI = m.tag==='AI';
+    const isAI = m.author==='AI';
+    const s = MEMBER_STYLE[m.author]||{cls:'av-0',lbl:'?'};
     const d = document.createElement('div');
     d.className='msg';
-    d.innerHTML=`<div class="msg-av ${isAI?'':''}${mv.av}" style="${isAI?'background:var(--blue2);color:var(--blue);':''}">${isAI?'AI':mv.lbl}</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">${m.author}</span><span class="msg-time">${fmt(m.ts)}</span></div><div class="${isAI?'ai-body':'msg-body'}">${m.text}</div></div>`;
+    d.innerHTML=`<div class="msg-av ${isAI?'av-0':''}${s.cls}" style="${isAI?'background:#dde8ff;color:#2a5cd4;':''}">${isAI?'AI':s.lbl}</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">${m.author}</span><span class="msg-time">${fmt(m.ts)}</span></div><div class="${isAI?'ai-body':'msg-body'}">${m.text}</div></div>`;
     feed.appendChild(d);
   });
-  if(atBottom) feed.scrollTop = feed.scrollHeight;
+  if(atBottom) feed.scrollTop=feed.scrollHeight;
 }
 
-
-window.sendMsg = async ()=>{
-  if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
+window.sendMsg = async function(){
+  if(!activeChId) return alert('채널을 먼저 선택하세요.');
   const inp = document.getElementById('msg-input');
   const text = inp.value.trim();
   if(!text) return;
-  const author = currentUser;
-  const msg = {author,text,ts:Date.now()};
-  if(db){ await push(ref(db,'msgs/'+activeChId), msg); }
-  else {
-    const saved = localStorage.getItem('msgs_'+activeChId);
-    const msgs = saved ? JSON.parse(saved) : [];
-    msgs.push(msg);
-    localStorage.setItem('msgs_'+activeChId, JSON.stringify(msgs));
-    renderFeed(msgs);
-  }
+  await push(ref(db,'msgs/'+activeChId), {author:currentUser, text, ts:Date.now()});
   inp.value='';
 };
 
-window.askAI = async ()=>{
-  if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
-  // Always re-check storage before asking
-  
+window.askAI = async function(){
+  if(!activeChId) return alert('채널을 먼저 선택하세요.');
   const inp = document.getElementById('ai-input');
   const q = inp.value.trim();
   if(!q) return;
   const btn = document.getElementById('ai-btn');
   btn.disabled=true; btn.textContent='생각 중...'; inp.value='';
-
   const feed = document.getElementById('feed');
   const ld = document.createElement('div');
   ld.className='msg'; ld.id='ai-ld';
-  ld.innerHTML=`<div class="msg-av" style="background:var(--blue2);color:var(--blue);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">AI</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">AI 에이전트</span></div><div class="ai-body"><div class="dots"><span></span><span></span><span></span></div></div></div>`;
+  ld.innerHTML=`<div class="msg-av" style="background:#dde8ff;color:#2a5cd4;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">AI</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">AI</span></div><div class="ai-body"><div class="dots"><span></span><span></span><span></span></div></div></div>`;
   feed.appendChild(ld); feed.scrollTop=feed.scrollHeight;
-
-  const ch = channels.find(c=>c.id===activeChId);
-  let ctx='아직 기록이 없습니다.';
-  if(db){
-    const snap = await get(ref(db,'msgs/'+activeChId));
-    if(snap.exists()){
-      const msgs = Object.values(snap.val()).sort((a,b)=>a.ts-b.ts).slice(-30);
-      ctx = msgs.map(m=>`[${m.author}·${m.tag}] ${m.text}`).join('\n');
-    }
-  } else {
-    const saved = localStorage.getItem('msgs_'+activeChId);
-    if(saved){ const msgs=JSON.parse(saved).slice(-30); ctx=msgs.map(m=>`[${m.author}·${m.tag}] ${m.text}`).join('\n'); }
-  }
-
+  const ch = allChannels.find(c=>c.id===activeChId);
+  const snap = await get(ref(db,'msgs/'+activeChId));
+  const ctx = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts).slice(-30).map(m=>`[${m.author}] ${m.text}`).join('\n') : '기록 없음';
   try{
     const res = await fetch('/api/chat',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
-        system:`당신은 무역 및 부품 개발 팀의 AI 에이전트입니다. 현재 프로젝트: "${ch?.name}". 팀원들의 기록을 바탕으로 질문에 답하세요. 한국어로 간결하고 실용적으로 답하세요.\n\n팀 기록:\n${ctx}`,
-        messages:[{role:'user',content:q}]})
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`당신은 DL팀의 AI 에이전트입니다. 현재 채널: "${ch?.name}". 팀 기록을 바탕으로 질문에 한국어로 간결하게 답하세요.\n\n팀 기록:\n${ctx}`,
+        messages:[{role:'user',content:q}]
+      })
     });
     const data = await res.json();
     const answer = data.content?.[0]?.text||'답변을 가져오지 못했어요.';
     document.getElementById('ai-ld')?.remove();
-    const aiMsg = {author:'AI 에이전트',tag:'AI',text:`Q: ${q}\n\n${answer}`,ts:Date.now()};
-    if(db) await push(ref(db,'msgs/'+activeChId), aiMsg);
-    else {
-      const saved=localStorage.getItem('msgs_'+activeChId);
-      const msgs=saved?JSON.parse(saved):[];
-      msgs.push(aiMsg);
-      localStorage.setItem('msgs_'+activeChId,JSON.stringify(msgs));
-      renderFeed(msgs);
-    }
-  } catch(e){
+    await push(ref(db,'msgs/'+activeChId), {author:'AI', text:`Q: ${q}\n\n${answer}`, ts:Date.now()});
+  }catch(e){
     document.getElementById('ai-ld')?.remove();
-    alert('AI 연결 오류: '+e.message);
+    alert('AI 오류: '+e.message);
   }
   btn.disabled=false; btn.textContent='AI 답변 ↗';
 };
 
+// ── Init ──
 document.getElementById('msg-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.sendMsg();}});
 document.getElementById('ai-input').addEventListener('keydown',e=>{if(e.key==='Enter')window.askAI();});
-document.getElementById('new-ch-input').addEventListener('keydown',e=>{if(e.key==='Enter')window.addCh();});
 
-// Mobile sidebar handled in global script above
+const app = initializeApp(FIREBASE_CONFIG);
+db = getDatabase(app);
+document.getElementById('live-dot').classList.add('pulse');
+document.getElementById('sync-txt').textContent='실시간 동기화';
+initUser();
 
-loadUser();
-initFirebase();
-
-// Register service worker for PWA
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').catch(()=>{});
-}
-
-// ── Presence (online tracking) ──
-function startPresence(){
-  if(!db || !currentUser) return;
-  const presenceRef = ref(db, 'presence/' + currentUser);
-  // Write online status
-  set(presenceRef, {online: true, ts: Date.now()});
-  // Update every 30 seconds to stay online
-  setInterval(()=>{ set(presenceRef, {online: true, ts: Date.now()}); }, 30000);
-  // Watch all members presence
-  const allPresenceRef = ref(db, 'presence');
-  onValue(allPresenceRef, snap=>{
-    // Hide all dots first
-    document.querySelectorAll('.online').forEach(d=>d.classList.remove('on'));
-    if(!snap.exists()) return;
-    const now = Date.now();
-    Object.entries(snap.val()).forEach(([name, data])=>{
-      // Consider online if updated within last 60 seconds
-      if(data.online && (now - data.ts) < 60000){
-        const dot = document.getElementById('dot-' + name);
-        if(dot) dot.classList.add('on');
-      }
-    });
-  });
-}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
 </body>
 </html>
