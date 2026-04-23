@@ -220,13 +220,14 @@ import { getDatabase, ref, push, onValue, remove, set, get } from 'https://www.g
 // 🔧 여기에 Firebase 설정을 붙여넣으세요
 // (아래 SETUP.md 안내 참고)
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBDGJs1uPIBu_QI78iUbBS9CYZ569gqadQ",
+  authDomain: "team-agent-5b4c3.firebaseapp.com",
+  databaseURL: "https://team-agent-5b4c3-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "team-agent-5b4c3",
+  storageBucket: "team-agent-5b4c3.firebasestorage.app",
+  messagingSenderId: "267688604166",
+  appId: "1:267688604166:web:bba0abcfa4913db9bfc987",
+  measurementId: "G-FZTZHVM2FJ"
 };
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -260,7 +261,7 @@ window.showKeyModal = ()=>{ document.getElementById('key-modal').classList.add('
 
 function loadApiKey(){
   apiKey = localStorage.getItem('anthropic_key')||'';
-  if(!apiKey) document.getElementById('key-modal').classList.add('show');
+  
 }
 
 // ── Firebase Init ──
