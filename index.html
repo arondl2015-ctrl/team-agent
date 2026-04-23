@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>팀 에이전트 — 무역 부품 개발</title>
+<title>DL팀 — 무역 부품 개발</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="팀 에이전트">
+<meta name="apple-mobile-web-app-title" content="DL팀">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .av-2{background:var(--coral3);color:var(--coral);}
 .av-3{background:var(--purple3);color:var(--purple);}
 .av-4{background:var(--amber3);color:var(--amber);}
-.online{width:6px;height:6px;border-radius:50%;background:var(--teal);margin-left:auto;flex-shrink:0;}
+
 .divider{height:1px;background:var(--border);margin:7px 0;}
 .ch-top{display:flex;align-items:center;justify-content:space-between;padding:10px 13px 4px;}
 .add-btn{width:20px;height:20px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -294,7 +294,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
   <div style="display:flex;align-items:center;gap:9px;">
     <button id="menu-btn" onclick="toggleSidebar()">☰</button>
     <div class="logo">T</div>
-    <span id="app-name">팀 에이전트</span>
+    <span id="app-name">DL팀</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="sync-pill"><div class="live-dot" id="live-dot"></div><span id="sync-txt">연결 중...</span></div>
@@ -305,10 +305,10 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 <div id="body">
   <div id="sidebar">
     <div class="sb-label">팀 멤버</div>
-    <div class="member"><div class="av av-0">A</div>Aron<div class="online"></div></div>
-    <div class="member"><div class="av av-1">N</div>Namil<div class="online"></div></div>
+    <div class="member"><div class="av av-0">A</div>Aron</div>
+    <div class="member"><div class="av av-1">N</div>Namil</div>
     <div class="member"><div class="av av-2">김</div>김형자</div>
-    <div class="member"><div class="av av-3">B</div>Byungjo<div class="online"></div></div>
+    <div class="member"><div class="av av-3">B</div>Byungjo</div>
     <div class="member"><div class="av av-4">A</div>AA</div>
     <div class="divider"></div>
     <div class="ch-top">
@@ -719,6 +719,31 @@ initFirebase();
 // Register service worker for PWA
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+
+// ── Presence (online tracking) ──
+function startPresence(){
+  if(!db || !currentUser) return;
+  const presenceRef = ref(db, 'presence/' + currentUser);
+  // Write online status
+  set(presenceRef, {online: true, ts: Date.now()});
+  // Update every 30 seconds to stay online
+  setInterval(()=>{ set(presenceRef, {online: true, ts: Date.now()}); }, 30000);
+  // Watch all members presence
+  const allPresenceRef = ref(db, 'presence');
+  onValue(allPresenceRef, snap=>{
+    // Hide all dots first
+    document.querySelectorAll('.online').forEach(d=>d.classList.remove('on'));
+    if(!snap.exists()) return;
+    const now = Date.now();
+    Object.entries(snap.val()).forEach(([name, data])=>{
+      // Consider online if updated within last 60 seconds
+      if(data.online && (now - data.ts) < 60000){
+        const dot = document.getElementById('dot-' + name);
+        if(dot) dot.classList.add('on');
+      }
+    });
+  });
 }
 </script>
 </body>
