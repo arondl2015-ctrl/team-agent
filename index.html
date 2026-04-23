@@ -442,11 +442,16 @@ function loadLocalChannels(){
 }
 
 function getJoinedChannels(){
-  const saved = localStorage.getItem('joined_channels');
+  // Check both localStorage and memory
+  const saved = localStorage.getItem('joined_'+currentUser);
   return saved ? JSON.parse(saved) : [];
 }
 function saveJoinedChannels(ids){
-  localStorage.setItem('joined_channels', JSON.stringify(ids));
+  localStorage.setItem('joined_'+currentUser, JSON.stringify(ids));
+  // Also save to Firebase per user
+  if(db && currentUser){
+    set(ref(db, 'joined/'+currentUser), ids).catch(()=>{});
+  }
 }
 function isJoined(chId){ return getJoinedChannels().includes(chId); }
 function joinChannel(chId){
@@ -454,12 +459,25 @@ function joinChannel(chId){
   if(!joined.includes(chId)){ joined.push(chId); saveJoinedChannels(joined); }
 }
 
-function autoJoinChannels(){
+async function autoJoinChannels(){
+  // Load joined channels from Firebase for this user
+  if(db && currentUser){
+    try{
+      const snap = await get(ref(db, 'joined/'+currentUser));
+      if(snap.exists()){
+        const firebaseJoined = snap.val();
+        // Merge with localStorage
+        const local = getJoinedChannels();
+        const merged = [...new Set([...local, ...firebaseJoined])];
+        localStorage.setItem('joined_'+currentUser, JSON.stringify(merged));
+      }
+    }catch(e){}
+  }
   renderChannels();
   const joinedIds = getJoinedChannels();
   const joined = channels.filter(ch=>joinedIds.includes(ch.id));
   if(joined.length) selectCh(joined[0].id);
-  else document.getElementById('feed').innerHTML='<div class="empty">초대 코드로 채널에 입장하세요</div>';
+  else document.getElementById('feed').innerHTML='<div class="empty">+ 버튼으로 채널을 만들거나 초대 코드로 입장하세요</div>';
 }
 
 // SHA-256 hash for secure code comparison
