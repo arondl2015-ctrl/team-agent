@@ -345,22 +345,24 @@ function renderChannels(joined){
 }
 
 async function saveJoined(joined){
-  localStorage.setItem('joined_'+currentUser, JSON.stringify(joined));
-  if(db && currentUser){
-    await set(ref(db,'joined/'+currentUser), joined);
-  }
+  try{
+    localStorage.setItem('joined_'+currentUser, JSON.stringify(joined));
+    if(db && currentUser){
+      await set(ref(db,'joined/'+currentUser), joined);
+      console.log('Saved joined channels to Firebase:', joined);
+    }
+  }catch(e){ console.log('saveJoined error:', e); }
 }
 
 async function getJoined(){
-  // Always check Firebase first for persistence
   try{
     const snap = await get(ref(db,'joined/'+currentUser));
-    if(snap.exists()){
+    if(snap.exists() && Array.isArray(snap.val())){
       const j = snap.val();
       localStorage.setItem('joined_'+currentUser, JSON.stringify(j));
       return j;
     }
-  }catch(e){}
+  }catch(e){ console.log('getJoined error:', e); }
   const saved = localStorage.getItem('joined_'+currentUser);
   return saved ? JSON.parse(saved) : [];
 }
