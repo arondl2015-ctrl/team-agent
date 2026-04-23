@@ -398,9 +398,12 @@ function saveApiKey(){
   apiKey = v;
   try{
     localStorage.setItem('anthropic_key', v);
-    sessionStorage.setItem('anthropic_key', v);
+    // Also save as cookie for 365 days as backup
+    const exp = new Date(Date.now() + 365*24*60*60*1000).toUTCString();
+    document.cookie = 'ak=' + encodeURIComponent(v) + ';expires=' + exp + ';path=/;SameSite=Strict';
   }catch(e){}
   document.getElementById('key-modal').classList.remove('show');
+  document.getElementById('api-key-input').value = '';
 }
 window.saveApiKey = saveApiKey;
 window.showKeyModal = ()=>{ document.getElementById('key-modal').classList.add('show'); };
@@ -656,9 +659,8 @@ window.sendMsg = async ()=>{
 
 window.askAI = async ()=>{
   if(!activeChId) return alert('프로젝트를 먼저 선택하세요.');
-  if(!apiKey){
-    apiKey = localStorage.getItem('anthropic_key')||'';
-  }
+  // Always re-check storage before asking
+  if(!apiKey) loadApiKey();
   if(!apiKey) return window.showKeyModal();
   const inp = document.getElementById('ai-input');
   const q = inp.value.trim();
