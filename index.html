@@ -210,17 +210,15 @@ body{display:flex;flex-direction:column;overflow:hidden;}
   #send-btn{ padding: 8px 12px; font-size: 12px; }
   #ai-input{ font-size: 12px; padding: 7px 10px; }
   #ai-btn{ padding: 7px 10px; font-size: 12px; }
-  #menu-btn{ display: flex; }
   .row3{ flex-direction: row; }
   .user-modal-box, .invite-box, .new-ch-box{ width: 90vw; padding: 22px 18px; }
   #key-modal .modal-box{ width: 90vw; padding: 22px 18px; }
 }
 @media (min-width: 601px) {
-  #menu-btn{ display: none !important; }
   #overlay{ display: none !important; }
 }
 #menu-btn{
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
@@ -233,6 +231,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
   cursor: pointer;
   flex-shrink: 0;
 }
+@media (min-width: 601px){ #menu-btn{ display: none; } }
 </style>
 </head>
 <body>
