@@ -56,6 +56,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .ch-del{font-size:11px;color:var(--text3);cursor:pointer;padding:2px 5px;display:none;}
 .channel:hover .ch-del{display:block;}
 .ch-del:hover{color:var(--coral);}
+.ch-badge{background:var(--coral);color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:600;margin-left:auto;flex-shrink:0;}
 
 #ch-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 #ch-bar-title{font-size:14px;font-weight:600;}
@@ -217,7 +218,11 @@ body{display:flex;flex-direction:column;overflow:hidden;}
       </div>
       <div class="msg-row">
         <textarea id="msg-input" rows="2" placeholder="기록, 메모, 아이디어를 입력하세요... (Enter로 전송)"></textarea>
-        <button id="send-btn" onclick="sendMsg()">공유</button>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <button id="send-btn" onclick="sendMsg()">공유</button>
+          <label for="img-input" style="padding:7px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:12px;cursor:pointer;text-align:center;white-space:nowrap;">📷</label>
+          <input type="file" id="img-input" accept="image/*" style="display:none" onchange="sendImage(this)"/>
+        </div>
       </div>
       <div class="ai-row">
         <input id="ai-input" placeholder="AI에게 질문: 예) 현재 상황 요약해줘"/>
@@ -331,8 +336,7 @@ async function loadJoinedAndRender(){
   }
   renderChannels(joined);
   // Auto-select first joined channel
-  const first = allChannels.find(ch=>joined.includes(ch.id));
-  if(first) selectCh(first.id);
+  // Don't auto-select - show main screen first
 }
 
 function renderChannels(joined){
@@ -343,7 +347,9 @@ function renderChannels(joined){
     const d = document.createElement('div');
     d.className='channel'+(activeChId===ch.id?' active':'');
     d.onclick=()=>selectCh(ch.id);
-    d.innerHTML=`<span style="font-size:13px">${ch.icon||'📦'}</span><span class="ch-name">${ch.name}</span><span class="ch-del" onclick="delCh(event,'${ch.id}')">✕</span>`;
+    const unread = getUnread(ch.id);
+    const badge = unread>0 && activeChId!==ch.id ? `<span class="ch-badge">${unread}</span>` : '';
+    d.innerHTML=`<span style="font-size:13px">${ch.icon||'📦'}</span><span class="ch-name">${ch.name}</span>${badge}<span class="ch-del" onclick="delCh(event,'${ch.id}')">✕</span>`;
     list.appendChild(d);
   });
 }
@@ -457,16 +463,33 @@ window.delCh = async function(e, id){
 function selectCh(id){
   if(window.innerWidth<=600) closeSidebar();
   activeChId=id;
+  setLastRead(id);
   const ch = allChannels.find(c=>c.id===id);
   document.getElementById('ch-bar-title').textContent = ch ? ch.icon+' '+ch.name : '';
   document.getElementById('ch-bar-sub').textContent = '팀 공유 채널 · 실시간 동기화';
-  // Re-render to update active state
   getJoined().then(joined=>renderChannels(joined));
-  // Subscribe to messages
   if(activeSub) activeSub();
   activeSub = onValue(ref(db,'msgs/'+id), snap=>{
     const msgs = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts) : [];
+    if(!window._msgCache) window._msgCache={};
+    window._msgCache[id] = msgs;
+    setLastRead(id);
     renderFeed(msgs);
+    // Update badges for other channels
+    getJoined().then(joined=>renderChannels(joined));
+  });
+}
+
+// Also subscribe to all joined channels for unread counts
+async function subscribeUnread(joined){
+  joined.forEach(chId=>{
+    if(chId===activeChId) return;
+    onValue(ref(db,'msgs/'+chId), snap=>{
+      const msgs = snap.exists() ? Object.values(snap.val()).sort((a,b)=>a.ts-b.ts) : [];
+      if(!window._msgCache) window._msgCache={};
+      window._msgCache[chId] = msgs;
+      getJoined().then(j=>renderChannels(j));
+    });
   });
 }
 
@@ -480,11 +503,38 @@ function renderFeed(msgs){
     const s = MEMBER_STYLE[m.author]||{cls:'av-0',lbl:'?'};
     const d = document.createElement('div');
     d.className='msg';
-    d.innerHTML=`<div class="msg-av ${isAI?'av-0':''}${s.cls}" style="${isAI?'background:#dde8ff;color:#2a5cd4;':''}">${isAI?'AI':s.lbl}</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">${m.author}</span><span class="msg-time">${fmt(m.ts)}</span></div><div class="${isAI?'ai-body':'msg-body'}">${m.text}</div></div>`;
+    const bodyContent = m.img 
+      ? `<img src="${m.img}" style="max-width:100%;max-height:300px;border-radius:8px;display:block;cursor:pointer;" onclick="window.open('${m.img}','_blank')"/>${m.text?'<div style='margin-top:6px'>'+m.text+'</div>':''}`
+      : m.text;
+    d.innerHTML=`<div class="msg-av ${isAI?'av-0':''}${s.cls}" style="${isAI?'background:#dde8ff;color:#2a5cd4;':''}">${isAI?'AI':s.lbl}</div><div class="msg-r"><div class="msg-meta"><span class="msg-name">${m.author}</span><span class="msg-time">${fmt(m.ts)}</span></div><div class="${isAI?'ai-body':'msg-body'}">${bodyContent}</div></div>`;
     feed.appendChild(d);
   });
   if(atBottom) feed.scrollTop=feed.scrollHeight;
 }
+
+// ── Unread tracking ──
+function getLastRead(chId){ return parseInt(localStorage.getItem('lr_'+currentUser+'_'+chId)||'0'); }
+function setLastRead(chId){ localStorage.setItem('lr_'+currentUser+'_'+chId, Date.now()); }
+function getUnread(chId){
+  const lastRead = getLastRead(chId);
+  const ch_msgs = window._msgCache?.[chId]||[];
+  return ch_msgs.filter(m=>m.ts>lastRead && m.author!==currentUser).length;
+}
+
+// ── Image Upload ──
+window.sendImage = async function(input){
+  if(!activeChId) return alert('채널을 먼저 선택하세요.');
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024){ alert('2MB 이하 이미지만 가능해요.'); return; }
+  const reader = new FileReader();
+  reader.onload = async (e)=>{
+    const base64 = e.target.result;
+    await push(ref(db,'msgs/'+activeChId), {author:currentUser, text:'', img:base64, ts:Date.now()});
+  };
+  reader.readAsDataURL(file);
+  input.value='';
+};
 
 window.sendMsg = async function(){
   if(!activeChId) return alert('채널을 먼저 선택하세요.');
@@ -541,6 +591,32 @@ db = getDatabase(app);
 document.getElementById('live-dot').classList.add('pulse');
 document.getElementById('sync-txt').textContent='실시간 동기화';
 initUser();
+
+// Listen for new channels in real-time
+onValue(ref(db,'channels'), async snap=>{
+  if(!currentUser) return;
+  allChannels = snap.exists() ? Object.entries(snap.val()).map(([id,v])=>({id,...v})) : [];
+  // Auto-join channels where user is member
+  let joined = [];
+  try{
+    const jsnap = await get(ref(db,'joined/'+currentUser));
+    joined = jsnap.exists() ? (jsnap.val()||[]) : [];
+  }catch(e){
+    const saved = localStorage.getItem('joined_'+currentUser);
+    joined = saved ? JSON.parse(saved) : [];
+  }
+  let updated = false;
+  for(const ch of allChannels){
+    const members = ch.members||[];
+    if(members.includes(currentUser) && !joined.includes(ch.id)){
+      joined.push(ch.id);
+      updated = true;
+    }
+  }
+  if(updated) await saveJoined(joined);
+  renderChannels(joined);
+  subscribeUnread(joined);
+});
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
